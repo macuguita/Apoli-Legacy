@@ -5,6 +5,7 @@ import io.github.apace100.apoli.access.MutableItemStack;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.ActionOnItemUsePower;
 import io.github.apace100.apoli.power.PreventItemUsePower;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,17 +26,18 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements MutableItemStack, EntityLinkedItemStack {
 
-    @Shadow @Deprecated private Item item;
-
     @Shadow private int count;
-
-    @Shadow public abstract @Nullable Entity getEntityRepresentation();
 
     @Shadow public abstract int getUseDuration(LivingEntity entity);
 
     @Shadow @Final @Mutable
     private PatchedDataComponentMap components;
 
+    @Mutable
+    @Shadow
+    @Final
+    @Deprecated
+    private @Nullable Holder<Item> item;
     @Unique
     private ItemStack apoli$usedItemStack;
 
@@ -43,23 +45,19 @@ public abstract class ItemStackMixin implements MutableItemStack, EntityLinkedIt
     private Entity apoli$holdingEntity;
 
     @Override
-    public Entity getEntity() {
-        Entity vanillaHolder = getEntityRepresentation();
-        if(vanillaHolder == null) {
-            return apoli$holdingEntity;
-        }
-        return vanillaHolder;
+    public Entity apoli$getEntity() {
+        return apoli$holdingEntity;
     }
 
     @Override
-    public void setEntity(Entity entity) {
+    public void apoli$setEntity(Entity entity) {
         this.apoli$holdingEntity = entity;
     }
 
     @Inject(method = "copy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;setPopTime(I)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     private void copyNewParams(CallbackInfoReturnable<ItemStack> cir, ItemStack itemStack) {
         if (this.apoli$holdingEntity != null) {
-            ((EntityLinkedItemStack) (Object) itemStack).setEntity(apoli$holdingEntity);
+            itemStack.apoli$setEntity(apoli$holdingEntity);
         }
     }
 
@@ -153,13 +151,13 @@ public abstract class ItemStackMixin implements MutableItemStack, EntityLinkedIt
     }
 
     @Override
-    public void setItem(Item item) {
-        this.item = item;
+    public void apoli$setItem(Item item) {
+        this.item = item.builtInRegistryHolder();
     }
 
     @Override
-    public void setFrom(ItemStack stack) {
-        setItem(stack.getItem());
+    public void apoli$setFrom(ItemStack stack) {
+        apoli$setItem(stack.getItem());
         if (stack.getComponents() instanceof PatchedDataComponentMap map)
             components = map;
         count = stack.getCount();

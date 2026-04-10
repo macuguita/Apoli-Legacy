@@ -10,7 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -89,8 +89,8 @@ public abstract class GameRendererMixin {
         }
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V", shift = At.Shift.AFTER))
-    private void renderOverlayPowers(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci, @Local GuiGraphics guiGraphics) {
+    @Inject(method = "extractGui", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/client/DeltaTracker;)V", shift = At.Shift.AFTER))
+    private void renderOverlayPowers(DeltaTracker deltaTracker, boolean shouldRenderLevel, boolean resourcesLoaded, CallbackInfo ci, @Local GuiGraphicsExtractor guiGraphics) {
         boolean hudHidden = this.minecraft.options.hideGui;
         boolean thirdPerson = !minecraft.options.getCameraType().isFirstPerson();
         PowerHolderComponent.withPower(minecraft.getCameraEntity(), OverlayPower.class, p -> {
@@ -127,19 +127,6 @@ public abstract class GameRendererMixin {
         }
     }
 
-    @WrapOperation(method = "getFov", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;getFluidInCamera()Lnet/minecraft/world/level/material/FogType;"))
-    private FogType modifySubmersionType(Camera camera, Operation<FogType> original) {
-        FogType fogType = original.call(camera);
-        if(camera.entity() instanceof LivingEntity) {
-            for(ModifyCameraSubmersionTypePower p : PowerHolderComponent.getPowers(camera.entity(), ModifyCameraSubmersionTypePower.class)) {
-                if(p.doesModify(fogType)) {
-                    return p.getNewType();
-                }
-            }
-        }
-        return fogType;
-    }
-
     private HashMap<BlockPos, BlockState> savedStates = new HashMap<>();
 
     // PHASING: remove_blocks
@@ -174,16 +161,6 @@ public abstract class GameRendererMixin {
                 minecraft.level.setBlockAndUpdate(eyePosition, state);
                 savedStates.remove(eyePosition);
             }
-        }
-    }
-
-    // PHASING
-    @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/Entity;ZZF)V"), method = "updateCamera")
-    private void preventThirdPerson(Camera camera, Level level, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, Operation<Void> original) {
-        if (PowerHolderComponent.getPowers(camera.entity(), PhasingPower.class).stream().anyMatch(pp -> pp.getRenderType() == PhasingPower.RenderType.REMOVE_BLOCKS)) {
-            camera.setup(level, focusedEntity, false, false, tickDelta);
-        } else {
-            original.call(camera, level, focusedEntity, thirdPerson, inverseView, tickDelta);
         }
     }
 

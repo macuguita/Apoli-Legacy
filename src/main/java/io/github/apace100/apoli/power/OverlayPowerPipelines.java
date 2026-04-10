@@ -1,8 +1,6 @@
 package io.github.apace100.apoli.power;
 
-import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -20,10 +18,10 @@ public class OverlayPowerPipelines {
         .withSampler("Sampler0")
         .withVertexFormat(DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS)
         .withUniform("ColorModulator", UniformType.UNIFORM_BUFFER) // We don't need this, but also, for some reason it will spam the logs if we don't use it?
-        .withColorWrite(true, true)
-        .withBlend(BlendFunction.OVERLAY)
-        .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
-        .withDepthWrite(false)
+//        .withColorWrite(true, true)
+//        .withBlend(BlendFunction.OVERLAY)
+//        .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+//        .withDepthWrite(false)
         .buildSnippet();
 
     @Environment(EnvType.CLIENT)
@@ -34,6 +32,6 @@ public class OverlayPowerPipelines {
     @Environment(EnvType.CLIENT)
     public static final RenderPipeline NAUSEA_PIPELINE = RenderPipeline.builder(OVERLAY_SNIPPET)
         .withLocation(Apoli.identifier("pipeline/overlay_nausea"))
-        .withBlend(BlendFunction.ADDITIVE)
+//        .withBlend(BlendFunction.ADDITIVE)
         .build();
 }

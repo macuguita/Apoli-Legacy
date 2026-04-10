@@ -3,6 +3,9 @@
   "minVersion": "0.8",
   "package": "io.github.apace100.apoli.mixin",
   "compatibilityLevel": "JAVA_16",
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  },
   "mixins": [
     "AbstractBlockMixin",
     "AbstractBlockStateMixin",
@@ -58,6 +61,7 @@
   ],
   "client": [
     "BackgroundRendererMixin",
+    "CameraMixin",
     "CapeFeatureRendererMixin",
     "ChunkRendererRegionMixin",
     "ClientAdvancementManagerAccessor",
@@ -75,7 +79,7 @@
     "InGameOverlayRendererMixin",
     "ItemStackMixinClient",
     "JumpableVehicleBarRendererMixin",
-    "LightmapTextureManagerMixin",
+    "LightmapRenderStateExtractorMixin",
     "LivingEntityRendererMixin",
     "LivingEntityRenderStateInject",
     "LocatorBarRendererMixin",

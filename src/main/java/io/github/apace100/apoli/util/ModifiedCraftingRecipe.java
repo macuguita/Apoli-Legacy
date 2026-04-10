@@ -1,6 +1,7 @@
 package io.github.apace100.apoli.util;
 
 import com.google.common.collect.Lists;
+import com.mojang.serialization.MapCodec;
 import io.github.apace100.apoli.access.PowerCraftingInventory;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.mixin.CraftingInventoryAccessor;
@@ -9,6 +10,8 @@ import io.github.apace100.apoli.mixin.PlayerScreenHandlerAccessor;
 import io.github.apace100.apoli.power.ModifyCraftingPower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingMenu;
@@ -22,11 +25,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class ModifiedCraftingRecipe extends CustomRecipe {
+    public static final ModifiedCraftingRecipe INSTANCE = new ModifiedCraftingRecipe();
+    public static final MapCodec<ModifiedCraftingRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, ModifiedCraftingRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final RecipeSerializer<ModifiedCraftingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
-    public static final RecipeSerializer<? extends CustomRecipe> SERIALIZER = new CustomRecipe.Serializer<>(ModifiedCraftingRecipe::new);
-
-    public ModifiedCraftingRecipe(CraftingBookCategory category) {
-        super(category);
+    public ModifiedCraftingRecipe() {
     }
 
     @Override
@@ -48,8 +52,7 @@ public class ModifiedCraftingRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries)
-    {
+    public ItemStack assemble(CraftingInput input) {
         var inventory = ((CraftingInputContainerHolder) input).apoli$getCraftingContainer();
 
         if (inventory instanceof TransientCraftingContainer craftingInventory)

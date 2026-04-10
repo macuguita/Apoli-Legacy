@@ -11,7 +11,7 @@ import io.github.apace100.calio.data.SerializableDataTypes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -68,7 +68,7 @@ public class OverlayPower extends Power {
     }
 
     @Environment(EnvType.CLIENT)
-    public void render(GuiGraphics guiGraphics) {
+    public void render(GuiGraphicsExtractor GuiGraphicsExtractor) {
         Minecraft client = Minecraft.getInstance();
         int i = client.getWindow().getGuiScaledWidth();
         int j = client.getWindow().getGuiScaledHeight();
@@ -103,7 +103,7 @@ public class OverlayPower extends Power {
         var renderTarget = client.getMainRenderTarget();
         var encoder = RenderSystem.getDevice().createCommandEncoder();
 
-        guiGraphics.blit(RenderPipelines.GUI_NAUSEA_OVERLAY, texture, 0, 0, 0f, 0f, client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight(), client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight(), ARGB.colorFromFloat(a, g, h, k));
+        GuiGraphicsExtractor.blit(RenderPipelines.GUI_NAUSEA_OVERLAY, texture, 0, 0, 0f, 0f, client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight(), client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight(), ARGB.colorFromFloat(a, g, h, k));
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         bufferBuilder.addVertex(m, n + l, -90.0f).setUv(0.0F, 1.0F).setColor(g, h, k, a);

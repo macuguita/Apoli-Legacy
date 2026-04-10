@@ -1,6 +1,7 @@
 package io.github.apace100.apoli.mixin;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.apace100.apoli.access.MovingEntity;
 import io.github.apace100.apoli.access.SubmergableEntity;
 import io.github.apace100.apoli.access.WaterMovingEntity;
@@ -15,6 +16,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityFluidInteraction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.BlockGetter;
@@ -25,6 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -48,7 +51,7 @@ public abstract class EntityMixin implements MovingEntity, SubmergableEntity {
     }
 
     @Shadow
-    public Level level;
+    private Level level;
 
     @Shadow
     public abstract double getFluidHeight(TagKey<Fluid> fluid);
@@ -57,13 +60,16 @@ public abstract class EntityMixin implements MovingEntity, SubmergableEntity {
     public float moveDist;
 
     @Shadow
-    protected boolean onGround;
-
-    @Shadow @Nullable protected Set<TagKey<Fluid>> fluidOnEyes;
-
-    @Shadow protected Object2DoubleMap<TagKey<Fluid>> fluidHeight;
+    private boolean onGround;
 
     @Shadow public abstract boolean isSwimming();
+
+    @Shadow
+    public abstract boolean isEyeInFluid(TagKey<Fluid> type);
+
+    @Shadow
+    @Final
+    private EntityFluidInteraction fluidInteraction;
 
     @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)
     private void makeEntitiesIgnoreWater(CallbackInfoReturnable<Boolean> cir) {
@@ -121,7 +127,7 @@ public abstract class EntityMixin implements MovingEntity, SubmergableEntity {
         }
     }
 
-    @Redirect(method = "method_30022", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;"))
+    @Redirect(method = "lambda$isInWall$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;"))
     private VoxelShape preventPhasingSuffocation(BlockState state, BlockGetter world, BlockPos pos) {
         return state.getCollisionShape(world, pos, CollisionContext.of((Entity)(Object)this));
     }
@@ -164,13 +170,7 @@ public abstract class EntityMixin implements MovingEntity, SubmergableEntity {
 
     @Override
     public boolean isSubmergedInLoosely(TagKey<Fluid> tag) {
-        if(tag == null || fluidOnEyes == null) {
-            return false;
-        }
-        if(fluidOnEyes.contains(tag)) {
-            return true;
-        }
-        return false;
+        return isEyeInFluid(tag);
         //return Calio.areTagsEqual(Registry.FLUID_KEY, tag, submergedFluidTag);
     }
 
@@ -179,15 +179,7 @@ public abstract class EntityMixin implements MovingEntity, SubmergableEntity {
         if(tag == null) {
             return 0;
         }
-        if(fluidHeight.containsKey(tag)) {
-            return fluidHeight.getDouble(tag);
-        }
-        for(TagKey<Fluid> ft : fluidHeight.keySet()) {
-            if(Calio.areTagsEqual(Registries.FLUID, ft, tag)) {
-                return fluidHeight.getDouble(ft);
-            }
-        }
-        return 0;
+        return fluidInteraction.getFluidHeight(tag);
     }
 
     @Override

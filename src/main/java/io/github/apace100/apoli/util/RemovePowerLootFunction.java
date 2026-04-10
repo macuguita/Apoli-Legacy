@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.List;
@@ -26,19 +25,18 @@ public class RemovePowerLootFunction extends LootItemConditionalFunction {
             .apply(instance, RemovePowerLootFunction::new)
     );
 
-    public static final LootItemFunctionType<RemovePowerLootFunction> TYPE = new LootItemFunctionType<>(CODEC);
-
     private final EquipmentSlot slot;
     private final Identifier powerId;
+
+    @Override
+    public MapCodec<? extends LootItemConditionalFunction> codec() {
+        return CODEC;
+    }
 
     private RemovePowerLootFunction(List<LootItemCondition> conditions, EquipmentSlot slot, Identifier powerId) {
         super(conditions);
         this.slot = slot;
         this.powerId = powerId;
-    }
-
-    public LootItemFunctionType getType() {
-        return TYPE;
     }
 
     public ItemStack run(ItemStack stack, LootContext context) {

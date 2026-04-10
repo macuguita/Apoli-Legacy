@@ -5,7 +5,11 @@ import net.minecraft.world.item.ItemStack;
 
 public interface MutableItemStack {
 
-    void setItem(Item item);
+    default void apoli$setItem(Item item) {
+        throw new AssertionError("Implemented via mixin");
+    }
 
-    void setFrom(ItemStack stack);
+    default void apoli$setFrom(ItemStack stack) {
+        throw new AssertionError("Implemented via mixin");
+    }
 }

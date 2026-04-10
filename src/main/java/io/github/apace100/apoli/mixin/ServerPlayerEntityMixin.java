@@ -45,7 +45,7 @@ public abstract class ServerPlayerEntityMixin extends Player implements Containe
 
     @Shadow
     @Final
-    public MinecraftServer server;
+    private MinecraftServer server;
 
     @Shadow
     public ServerGamePacketListenerImpl connection;
@@ -54,15 +54,15 @@ public abstract class ServerPlayerEntityMixin extends Player implements Containe
         super(level, gameProfile);
     }
 
-    @Shadow
-    public abstract void displayClientMessage(Component message, boolean actionBar);
-
     @Shadow @Nullable private ServerPlayer.@Nullable RespawnConfig respawnConfig;
 
     @Shadow
-    protected static Optional findRespawnAndUseSpawnBlock(ServerLevel level, ServerPlayer.RespawnConfig respawnConfig, boolean useCharge) {
+    private static Optional findRespawnAndUseSpawnBlock(ServerLevel level, ServerPlayer.RespawnConfig respawnConfig, boolean useCharge) {
         throw new AssertionError();
     }
+
+    @Shadow
+    public abstract void sendSystemMessage(Component message, boolean overlay);
 
     // FRESH_AIR
     @Inject(method = "startSleepInBed", at = @At(value = "INVOKE",target = "Lnet/minecraft/server/level/ServerPlayer;setRespawnPosition(Lnet/minecraft/server/level/ServerPlayer$RespawnConfig;Z)V"), cancellable = true)
@@ -73,7 +73,7 @@ public abstract class ServerPlayerEntityMixin extends Player implements Containe
                         ((ServerPlayer)(Object)this).setRespawnPosition(new ServerPlayer.RespawnConfig(new LevelData.RespawnData(GlobalPos.of(this.level().dimension(), pos), this.getYRot(), this.getXRot()), false), true);
                     }
                     info.setReturnValue(Either.left(null));
-                    this.displayClientMessage(Component.translatable(p.getMessage()), true);
+                    this.sendSystemMessage(Component.translatable(p.getMessage()), true);
                 }
             }
         );
