@@ -1,5 +1,6 @@
 package io.github.apace100.apoli.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import io.github.apace100.apoli.access.EntityLinkedItemStack;
 import io.github.apace100.apoli.access.MutableItemStack;
 import io.github.apace100.apoli.component.PowerHolderComponent;
@@ -54,8 +55,8 @@ public abstract class ItemStackMixin implements MutableItemStack, EntityLinkedIt
         this.apoli$holdingEntity = entity;
     }
 
-    @Inject(method = "copy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;setPopTime(I)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void copyNewParams(CallbackInfoReturnable<ItemStack> cir, ItemStack itemStack) {
+    @Inject(method = "copy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;setPopTime(I)V", shift = At.Shift.AFTER))
+    private void copyNewParams(CallbackInfoReturnable<ItemStack> cir, @Local(name = "copy") ItemStack itemStack) {
         if (this.apoli$holdingEntity != null) {
             itemStack.apoli$setEntity(apoli$holdingEntity);
         }

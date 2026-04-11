@@ -1,5 +1,6 @@
 package io.github.apace100.apoli.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
 import io.github.apace100.apoli.access.EndRespawningEntity;
@@ -127,8 +128,8 @@ public abstract class ServerPlayerEntityMixin extends Player implements Containe
         apoli$stackBeforeDrop = this.getInventory().getSelectedItem().copy();
     }
 
-    @Inject(method = "drop(Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;findSlot(Lnet/minecraft/world/Container;I)Ljava/util/OptionalInt;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void checkItemUsageStopping(boolean entireStack, CallbackInfo ci, Inventory playerInventory, ItemStack itemStack) {
+    @Inject(method = "drop(Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;findSlot(Lnet/minecraft/world/Container;I)Ljava/util/OptionalInt;"))
+    private void checkItemUsageStopping(boolean entireStack, CallbackInfo ci, @Local(name = "removed") ItemStack itemStack) {
         if(this.isUsingItem() && !ItemStack.isSameItem(apoli$stackBeforeDrop, this.getInventory().getSelectedItem())) {
             ActionOnItemUsePower.executeActions(this, itemStack, apoli$stackBeforeDrop,
                     ActionOnItemUsePower.TriggerType.STOP, ActionOnItemUsePower.PriorityPhase.ALL);

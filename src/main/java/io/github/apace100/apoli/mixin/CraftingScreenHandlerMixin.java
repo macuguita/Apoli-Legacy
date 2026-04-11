@@ -1,5 +1,6 @@
 package io.github.apace100.apoli.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import io.github.apace100.apoli.access.PowerCraftingInventory;
 import io.github.apace100.apoli.power.ModifyCraftingPower;
 import net.minecraft.server.level.ServerLevel;
@@ -38,8 +39,8 @@ public abstract class CraftingScreenHandlerMixin extends AbstractCraftingMenu {
         }
     }
 
-    @Inject(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copy()Lnet/minecraft/world/item/ItemStack;", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void modifyOutputItems(Player player, int index, CallbackInfoReturnable<ItemStack> cir, ItemStack itemStack, Slot slot, ItemStack itemStack2) {
+    @Inject(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copy()Lnet/minecraft/world/item/ItemStack;", shift = At.Shift.AFTER))
+    private void modifyOutputItems(Player player, int index, CallbackInfoReturnable<ItemStack> cir, @Local(name = "stack") ItemStack itemStack2) {
         if(craftSlots instanceof PowerCraftingInventory pci) {
             if(pci.getPower() instanceof ModifyCraftingPower mcp) {
                 mcp.applyAfterCraftingItemAction(itemStack2);

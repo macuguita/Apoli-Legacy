@@ -38,9 +38,7 @@ import java.util.List;
 @Mixin(Player.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements Nameable, CommandSource {
 
-    @Shadow
-    @Final
-    public Inventory inventory;
+    @Shadow @Final private Inventory inventory;
 
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);

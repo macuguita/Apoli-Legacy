@@ -89,7 +89,7 @@ public abstract class LivingEntityMixin extends Entity implements ModifiableFood
         SyncStatusEffectsUtil.sendStatusEffectUpdatePacket((LivingEntity)(Object)this, SyncStatusEffectsUtil.UpdateType.CLEAR, null);
     }
 
-    @ModifyVariable(method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", at = @At("HEAD"))
+    @ModifyVariable(method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", at = @At("HEAD"), argsOnly = true)
     private MobEffectInstance modifyStatusEffect(MobEffectInstance effect) {
         Holder<MobEffect> effectType = effect.getEffect();
         int originalAmp = effect.getAmplifier();
@@ -169,9 +169,9 @@ public abstract class LivingEntityMixin extends Entity implements ModifiableFood
         return PowerHolderComponent.modify(this, ModifyHealingPower.class, originalValue);
     }
 
-    private boolean apoli$hasModifiedDamage;
-    private Optional<Boolean> apoli$shouldApplyArmor;
-    private Optional<Boolean> apoli$shouldDamageArmor;
+    @Unique private boolean apoli$hasModifiedDamage;
+    @Unique private Optional<Boolean> apoli$shouldApplyArmor;
+    @Unique private Optional<Boolean> apoli$shouldDamageArmor;
 
     @ModifyVariable(method = "hurtServer", at = @At("HEAD"), argsOnly = true)
     private float modifyDamageTaken(float originalValue, @Local(argsOnly = true) DamageSource source) {
@@ -399,7 +399,7 @@ public abstract class LivingEntityMixin extends Entity implements ModifiableFood
         }
     }
 
-    @Shadow protected abstract void hurtArmor(DamageSource source, float amount);
+    @Shadow public abstract void hurtArmor(DamageSource source, float amount);
 
     @Shadow public abstract int getArmorValue();
 

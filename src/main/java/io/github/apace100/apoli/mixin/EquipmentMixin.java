@@ -16,11 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Equippable.class)
 public abstract class EquipmentMixin {
-    @Shadow
-    abstract EquipmentSlot slot();
+    @Shadow public abstract EquipmentSlot slot();
 
     @Inject(method = "swapWithEquipmentSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"), cancellable = true)
-    private void preventArmorEquipping(ItemStack stack, Player player, CallbackInfoReturnable<InteractionResult> cir, @Local ItemStack itemStack) {
+    private void preventArmorEquipping(ItemStack stack, Player player, CallbackInfoReturnable<InteractionResult> cir, @Local(argsOnly = true) ItemStack itemStack) {
         PowerHolderComponent component = PowerHolderComponent.KEY.get(player);
         if(component.getPowers(RestrictArmorPower.class).stream().anyMatch(rap -> !rap.canEquip(itemStack, this.slot()))) {
             cir.setReturnValue(InteractionResult.FAIL);

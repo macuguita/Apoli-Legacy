@@ -16,8 +16,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -26,11 +28,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayerGameMode.class)
 public class ServerPlayerInteractionManagerMixin {
 
-    @Shadow
-    public ServerLevel level;
-    @Shadow
-    public ServerPlayer player;
-    private SavedBlockPosition savedBlockPosition;
+    @Shadow protected ServerLevel level;
+    @Final @Shadow protected ServerPlayer player;
+    @Unique private SavedBlockPosition savedBlockPosition;
 
     @Inject(method = "destroyBlock", at = @At("HEAD"))
     private void cacheBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
@@ -61,7 +61,7 @@ public class ServerPlayerInteractionManagerMixin {
         }
     }
 
-    @Inject(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copy()Lnet/minecraft/world/item/ItemStack;"), cancellable = true)
+    @Inject(method = "useItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copy()Lnet/minecraft/world/item/ItemStack;"))
     private void executeBlockUseActions(ServerPlayer player, Level world, ItemStack stack, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
         PowerHolderComponent.getPowers(player, ActionOnBlockUsePower.class).stream()
             .filter(p -> p.shouldExecute(hitResult.getBlockPos(), hitResult.getDirection(), hand, stack))

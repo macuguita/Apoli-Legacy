@@ -25,6 +25,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -126,8 +127,8 @@ public abstract class EntityMixin implements MovingEntity, SubmergableEntity {
         return state.getCollisionShape(world, pos, CollisionContext.of((Entity)(Object)this));
     }
 
-    private boolean isMoving;
-    private float distanceBefore;
+    @Unique private boolean isMoving;
+    @Unique private float distanceBefore;
 
     @Inject(method = "move", at = @At("HEAD"))
     private void saveDistanceTraveled(MoverType type, Vec3 movement, CallbackInfo ci) {

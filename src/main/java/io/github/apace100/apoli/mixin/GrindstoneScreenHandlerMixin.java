@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.GrindstoneMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,7 +48,7 @@ public abstract class GrindstoneScreenHandlerMixin extends AbstractContainerMenu
         super(type, syncId);
     }
 
-    @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/world/inventory/GrindstoneMenu;access:Lnet/minecraft/world/inventory/ContainerLevelAccess;", ordinal = 0))
+    @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/world/inventory/GrindstoneMenu;access:Lnet/minecraft/world/inventory/ContainerLevelAccess;", ordinal = 0, opcode = Opcodes.PUTFIELD))
     private void storeCurrentGrindstoneMenu(int containerId, Inventory playerInventory, ContainerLevelAccess access, CallbackInfo ci) {
         ApoliSharedMixinValues.CURRENT_GRINDSTONE_MENU.set((GrindstoneMenu) (Object) this);
     }

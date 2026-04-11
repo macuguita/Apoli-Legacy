@@ -124,7 +124,7 @@ public abstract class GameRendererMixin {
         }
     }
 
-    private HashMap<BlockPos, BlockState> savedStates = new HashMap<>();
+    @Unique private HashMap<BlockPos, BlockState> savedStates = new HashMap<>();
 
     // PHASING: remove_blocks
     @Inject(at = @At(value = "HEAD"), method = "render")
@@ -161,6 +161,7 @@ public abstract class GameRendererMixin {
         }
     }
 
+    @Unique
     private Set<BlockPos> getEyePos(float rangeX, float rangeY, float rangeZ) {
         Vec3 pos = mainCamera.entity().position().add(0, mainCamera.entity().getEyeHeight(mainCamera.entity().getPose()), 0);
         AABB cameraBox = new AABB(pos, pos);
