@@ -1,6 +1,3 @@
-import java.net.HttpURLConnection
-import java.net.URI
-
 plugins {
 	id("net.fabricmc.fabric-loom") version "1.16-SNAPSHOT"
 	`maven-publish`
@@ -143,37 +140,22 @@ tasks {
 publishing {
 	publications {
 		create<MavenPublication>("mavenJava") {
-			artifactId = project.property("archives_base_name") as String
+			groupId = property("maven_group") as String
+			artifactId = (property("archives_base_name") as String)
+			version = "${project.property("mod_version")}+${project.property("minecraft_version")}"
 			from(components["java"])
 		}
 	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		maven("https://mvn.devos.one/releases") {
-			name = "devOS"
+		mavenLocal()
+		maven {
+			name = "macuguita"
+			url = uri("https://maven.macuguita.com/releases")
+
 			credentials {
-				username = System.getenv()["MAVEN_USER"]
-				password = System.getenv()["MAVEN_PASS"]
+				username = env.MAVEN_USERNAME.orNull()
+				password = env.MAVEN_KEY.orNull()
 			}
-		}
-	}
-}
-
-tasks.named("publishMavenJavaPublicationToDevOSRepository") {
-	onlyIf {
-		val group = project.property("maven_group") as String
-		val artifactId = project.property("archives_base_name") as String
-		val version = project.version.toString()
-
-		try {
-			val connection = URI.create("https://mvn.devos.one/releases/${group.replace(".", "/")}/${artifactId}/${version}/${artifactId}-${version}.jar").toURL().openConnection() as HttpURLConnection
-			connection.requestMethod = "GET"
-			connection.connect()
-
-			connection.responseCode != 200
-		} catch (_: Exception) {
-			false
 		}
 	}
 }
