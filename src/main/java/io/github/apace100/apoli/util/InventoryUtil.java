@@ -6,6 +6,7 @@ import io.github.apace100.apoli.power.InventoryPower;
 import io.github.apace100.apoli.power.factory.action.ActionFactory;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.util.ArgumentWrapper;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.SlotRange;
 import net.minecraft.world.inventory.SlotRanges;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.slot.SlotCollection;
 import net.minecraft.world.level.Level;
 
@@ -186,7 +188,7 @@ public class InventoryUtil {
         Predicate<ItemStack> itemCondition = data.get("item_condition");
         Consumer<Tuple<Level, ItemStack>> itemAction = data.get("item_action");
 
-        ItemStack replacementStack = data.get("stack");
+        ItemStack replacementStack = ((ItemStackTemplate)data.get("stack")).create();
         boolean mergeNbt = data.getBoolean("merge_nbt");
 
         if (inventoryPower == null) slots.forEach(

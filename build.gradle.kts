@@ -97,14 +97,6 @@ dependencies {
 	// include "de.dafuqs:AdditionalEntityAttributes:${project.aea_version}"
 }
 
-tasks.named<Jar>("jar") {
-	dependsOn(project(":calio").tasks.named("jar"))
-
-	from(project(":calio").tasks.named<Jar>("jar").flatMap { it.archiveFile }) {
-		into("META-INF/jars")
-	}
-}
-
 tasks.withType<JavaCompile>().configureEach {
 	// ensure that the encoding is set to UTF-8, no matter what the system default is
 	// this fixes some edge cases with special characters not displaying correctly

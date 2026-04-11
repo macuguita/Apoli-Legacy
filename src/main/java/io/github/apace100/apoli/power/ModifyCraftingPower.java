@@ -92,7 +92,7 @@ public class ModifyCraftingPower extends ValueModifyingPower {
             new SerializableData()
                 .add("recipe", SerializableDataTypes.IDENTIFIER, null)
                 .add("item_condition", ApoliDataTypes.ITEM_CONDITION, null)
-                .add("result", SerializableDataTypes.ITEM_STACK, null)
+                .add("result", SerializableDataTypes.ITEM_STACK_TEMPLATE, null)
                 .add("item_action", ApoliDataTypes.ITEM_ACTION, null)
                 .add("item_action_after_crafting", ApoliDataTypes.ITEM_ACTION, null)
                 .add("entity_action", ApoliDataTypes.ENTITY_ACTION, null)

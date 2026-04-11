@@ -38,6 +38,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.tuple.Triple;
@@ -269,12 +270,12 @@ public class EntityActions {
             .add("fall_distance", SerializableDataTypes.FLOAT),
             (data, entity) -> entity.fallDistance = data.getFloat("fall_distance")));
         register(new ActionFactory<>(Apoli.identifier("give"), new SerializableData()
-            .add("stack", SerializableDataTypes.ITEM_STACK)
+            .add("stack", SerializableDataTypes.ITEM_STACK_TEMPLATE)
             .add("item_action", ApoliDataTypes.ITEM_ACTION, null)
             .add("preferred_slot", SerializableDataTypes.EQUIPMENT_SLOT, null),
             (data, entity) -> {
                 if(!entity.level().isClientSide()) {
-                    ItemStack stack = data.get("stack");
+                    ItemStack stack = ((ItemStackTemplate) data.get("stack")).create();
                     if(stack.isEmpty()) {
                         return;
                     }

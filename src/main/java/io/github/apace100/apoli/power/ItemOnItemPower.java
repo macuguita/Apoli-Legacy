@@ -95,7 +95,7 @@ public class ItemOnItemPower extends Power {
                 .add("using_item_condition", ApoliDataTypes.ITEM_CONDITION, null)
                 .add("on_item_condition", ApoliDataTypes.ITEM_CONDITION, null)
                 .add("result_from_on_stack", SerializableDataTypes.INT, 0)
-                .add("result", SerializableDataTypes.ITEM_STACK, null)
+                .add("result", SerializableDataTypes.ITEM_STACK_TEMPLATE, null)
                 .add("using_item_action", ApoliDataTypes.ITEM_ACTION, null)
                 .add("on_item_action", ApoliDataTypes.ITEM_ACTION, null)
                 .add("result_item_action", ApoliDataTypes.ITEM_ACTION, null)

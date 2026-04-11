@@ -120,7 +120,7 @@ public class ModifyGrindstonePower extends Power {
                 .add("output_condition", ApoliDataTypes.ITEM_CONDITION, null)
                 .add("item_action", ApoliDataTypes.ITEM_ACTION, null)
                 .add("item_action_after_grinding", ApoliDataTypes.ITEM_ACTION, null)
-                .add("result_stack", SerializableDataTypes.ITEM_STACK, null)
+                .add("result_stack", SerializableDataTypes.ITEM_STACK_TEMPLATE, null)
                 .add("result_type", SerializableDataType.enumValue(ResultType.class), ResultType.UNCHANGED)
                 .add("entity_action", ApoliDataTypes.ENTITY_ACTION, null)
                 .add("xp_modifier", Modifier.DATA_TYPE, null),

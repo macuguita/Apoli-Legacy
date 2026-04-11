@@ -88,7 +88,7 @@ public class ModifyFoodPower extends Power {
         return new PowerFactory<>(Apoli.identifier("modify_food"),
             new SerializableData()
                 .add("item_condition", ApoliDataTypes.ITEM_CONDITION, null)
-                .add("replace_stack", SerializableDataTypes.ITEM_STACK, null)
+                .add("replace_stack", SerializableDataTypes.ITEM_STACK_TEMPLATE, null)
                 .add("item_action", ApoliDataTypes.ITEM_ACTION, null)
                 .add("food_modifier", Modifier.DATA_TYPE, null)
                 .add("food_modifiers", Modifier.LIST_TYPE, null)

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -85,7 +86,8 @@ public class StartingEquipmentPower extends Power {
                 (type, player) -> {
                     StartingEquipmentPower power = new StartingEquipmentPower(type, player);
                     if(data.isPresent("stack")) {
-                        Tuple<Integer, ItemStack> stack = (Tuple<Integer, ItemStack>)data.get("stack");
+                        Tuple<Integer, ItemStackTemplate> stackTemplate = data.get("stack");
+                        Tuple<Integer, ItemStack> stack = new Tuple<>(stackTemplate.getA(), stackTemplate.getB().create());
                         int slot = stack.getA();
                         if(slot > Integer.MIN_VALUE) {
                             power.addStack(stack.getA(), stack.getB());
@@ -94,15 +96,22 @@ public class StartingEquipmentPower extends Power {
                         }
                     }
                     if(data.isPresent("stacks")) {
-                        ((List<Tuple<Integer, ItemStack>>)data.get("stacks"))
-                            .forEach(integerItemStackPair -> {
-                                int slot = integerItemStackPair.getA();
-                                if(slot > Integer.MIN_VALUE) {
-                                    power.addStack(integerItemStackPair.getA(), integerItemStackPair.getB());
-                                } else {
-                                    power.addStack(integerItemStackPair.getB());
-                                }
-                            });
+                        ((List<Tuple<Integer, ItemStackTemplate>>) data.get("stacks"))
+                                .stream()
+                                .map(tuple -> new Tuple<>(
+                                        tuple.getA(),
+                                        tuple.getB().create()
+                                ))
+                                .forEach(tuple -> {
+                                    int slot = tuple.getA();
+                                    ItemStack stack = tuple.getB();
+
+                                    if (slot > Integer.MIN_VALUE) {
+                                        power.addStack(slot, stack);
+                                    } else {
+                                        power.addStack(stack);
+                                    }
+                                });
                     }
                     power.setRecurrent(data.getBoolean("recurrent"));
                     return power;

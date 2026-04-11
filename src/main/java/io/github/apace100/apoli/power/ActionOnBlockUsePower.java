@@ -68,7 +68,7 @@ public class ActionOnBlockUsePower extends ActiveInteractionPower {
                 .add("directions", SerializableDataTypes.DIRECTION_SET, EnumSet.allOf(Direction.class))
                 .add("item_condition", ApoliDataTypes.ITEM_CONDITION, null)
                 .add("hands", SerializableDataTypes.HAND_SET, EnumSet.allOf(InteractionHand.class))
-                .add("result_stack", SerializableDataTypes.ITEM_STACK, null)
+                .add("result_stack", SerializableDataTypes.ITEM_STACK_TEMPLATE, null)
                 .add("held_item_action", ApoliDataTypes.ITEM_ACTION, null)
                 .add("result_item_action", ApoliDataTypes.ITEM_ACTION, null)
                 .add("action_result", SerializableDataTypes.ACTION_RESULT, InteractionResult.SUCCESS)
