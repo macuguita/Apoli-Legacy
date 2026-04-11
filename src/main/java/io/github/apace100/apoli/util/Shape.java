@@ -1,9 +1,10 @@
 package io.github.apace100.apoli.util;
 
+import net.minecraft.core.BlockPos;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.core.BlockPos;
 
 public enum Shape {
     CUBE, CHEBYSHEV,

@@ -4,8 +4,6 @@ import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.OverrideHudTexturePower;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.contextualbar.ExperienceBarRenderer;
-import net.minecraft.client.gui.contextualbar.JumpableVehicleBarRenderer;
-import net.minecraft.client.gui.contextualbar.LocatorBarRenderer;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

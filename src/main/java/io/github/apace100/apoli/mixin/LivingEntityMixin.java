@@ -12,7 +12,6 @@ import io.github.apace100.apoli.access.ModifiableFoodEntity;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.networking.SetAttackerPacket;
 import io.github.apace100.apoli.power.*;
-import io.github.apace100.apoli.util.InventoryUtil;
 import io.github.apace100.apoli.util.StackPowerUtil;
 import io.github.apace100.apoli.util.SyncStatusEffectsUtil;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;

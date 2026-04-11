@@ -8,12 +8,13 @@ import io.github.apace100.apoli.power.factory.condition.ConditionFactory;
 import io.github.apace100.apoli.util.HudRender;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataTypes;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class TargetActionOnHitPower extends CooldownPower {
 

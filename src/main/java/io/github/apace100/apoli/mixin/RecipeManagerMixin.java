@@ -1,20 +1,7 @@
 package io.github.apace100.apoli.mixin;
 
-import io.github.apace100.apoli.util.ModifiedCraftingRecipe;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Map;
-import java.util.Optional;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.Container;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
+import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(RecipeManager.class)
 public abstract class RecipeManagerMixin {

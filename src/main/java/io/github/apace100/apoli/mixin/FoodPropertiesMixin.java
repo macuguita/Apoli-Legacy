@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mixin(FoodProperties.class)
 public class FoodPropertiesMixin {

@@ -1,4 +1,3 @@
-import net.fabricmc.loom.task.RemapJarTask
 import java.net.HttpURLConnection
 import java.net.URI
 

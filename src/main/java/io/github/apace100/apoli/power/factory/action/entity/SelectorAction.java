@@ -12,9 +12,9 @@ import net.minecraft.commands.arguments.selector.EntitySelector;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.permissions.LevelBasedPermissionSet;
-import net.minecraft.server.permissions.PermissionSetUnion;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
+
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 

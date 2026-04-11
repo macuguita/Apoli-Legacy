@@ -1,7 +1,6 @@
 package io.github.apace100.apoli.power.factory.action.item;
 
 import io.github.apace100.apoli.Apoli;
-import io.github.apace100.apoli.access.EntityLinkedItemStack;
 import io.github.apace100.apoli.data.ApoliDataTypes;
 import io.github.apace100.apoli.power.factory.action.ActionFactory;
 import io.github.apace100.calio.data.SerializableData;

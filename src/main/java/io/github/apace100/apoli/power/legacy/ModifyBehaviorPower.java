@@ -10,10 +10,8 @@ import io.github.apace100.calio.data.SerializableDataType;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 
-import java.util.List;
 import java.util.function.Predicate;
 
 public class ModifyBehaviorPower extends Power {
