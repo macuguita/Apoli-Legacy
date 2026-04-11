@@ -7,7 +7,7 @@
       "conditions": [
         {
           "type": "apoli:block",
-          "block": "minecraft:grass"
+          "block": "minecraft:short_grass"
         },
         {
           "type": "apoli:block",

@@ -6,6 +6,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 
 import java.util.EnumSet;
@@ -18,10 +19,10 @@ public class InteractionPower extends Power {
     private final InteractionResult actionResult;
     private final Predicate<ItemStack> itemCondition;
     protected final Consumer<Tuple<Level, ItemStack>> heldItemAction;
-    protected final ItemStack itemResult;
+    protected final ItemStackTemplate itemResult;
     protected final Consumer<Tuple<Level, ItemStack>> resultItemAction;
 
-    public InteractionPower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStack itemResult, Consumer<Tuple<Level, ItemStack>> resultItemAction) {
+    public InteractionPower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStackTemplate itemResult, Consumer<Tuple<Level, ItemStack>> resultItemAction) {
         super(type, entity);
         this.hands = hands;
         this.actionResult = actionResult;
@@ -58,7 +59,7 @@ public class InteractionPower extends Power {
         if(power.heldItemAction != null) {
             power.heldItemAction.accept(new Tuple<>(actor.level(), heldStack));
         }
-        ItemStack resultingStack = power.itemResult == null ? heldStack : power.itemResult.copy();
+        ItemStack resultingStack = power.itemResult == null ? heldStack : power.itemResult.create();
         boolean modified = power.itemResult != null;
         if(power.resultItemAction != null) {
             power.resultItemAction.accept(new Tuple<>(actor.level(), resultingStack));

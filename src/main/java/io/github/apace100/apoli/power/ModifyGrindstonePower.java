@@ -13,6 +13,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import org.apache.commons.lang3.tuple.Triple;
@@ -28,7 +29,7 @@ public class ModifyGrindstonePower extends Power {
     private final Predicate<ItemStack> outputItemCondition;
     private final Predicate<BlockInWorld> blockCondition;
 
-    private final ItemStack newResultStack;
+    private final ItemStackTemplate newResultStack;
     private final Consumer<Tuple<Level, ItemStack>> resultItemAction;
     private final Consumer<Tuple<Level, ItemStack>> lateItemAction;
     private final Consumer<Entity> entityAction;
@@ -38,7 +39,7 @@ public class ModifyGrindstonePower extends Power {
 
     private final Modifier experienceModifier;
 
-    public ModifyGrindstonePower(PowerType<?> type, LivingEntity entity, Predicate<ItemStack> topItemCondition, Predicate<ItemStack> bottomItemCondition, Predicate<ItemStack> outputItemCondition, Predicate<BlockInWorld> blockCondition, ItemStack newResultStack, Consumer<Tuple<Level, ItemStack>> resultItemAction, Consumer<Tuple<Level, ItemStack>> lateItemAction, Consumer<Entity> entityAction, Consumer<Triple<Level, BlockPos, Direction>> blockAction, ResultType resultType, Modifier experienceModifier) {
+    public ModifyGrindstonePower(PowerType<?> type, LivingEntity entity, Predicate<ItemStack> topItemCondition, Predicate<ItemStack> bottomItemCondition, Predicate<ItemStack> outputItemCondition, Predicate<BlockInWorld> blockCondition, ItemStackTemplate newResultStack, Consumer<Tuple<Level, ItemStack>> resultItemAction, Consumer<Tuple<Level, ItemStack>> lateItemAction, Consumer<Entity> entityAction, Consumer<Triple<Level, BlockPos, Direction>> blockAction, ResultType resultType, Modifier experienceModifier) {
         super(type, entity);
         this.topItemCondition = topItemCondition;
         this.bottomItemCondition = bottomItemCondition;
@@ -91,7 +92,7 @@ public class ModifyGrindstonePower extends Power {
     public ItemStack getOutput(ItemStack inputTop, ItemStack inputBottom, ItemStack currentOutput) {
         ItemStack output = currentOutput.copy();
         switch (resultType) {
-            case SPECIFIED -> output = newResultStack.copy();
+            case SPECIFIED -> output = newResultStack.create();
             case FROM_BOTTOM -> output = inputBottom.copy();
             case FROM_TOP -> output = inputTop.copy();
         }

@@ -17,9 +17,7 @@
       "actions": [
         {
           "type": "apoli:spawn_particles",
-          "particle": {
-            "type": "minecraft:portal"
-          },
+          "particle":  "minecraft:portal",
           "count": 32,
           "offset_y": 0.25,
           "spread_y": 0.25,
@@ -37,9 +35,7 @@
       "actions": [
         {
           "type": "apoli:spawn_particles",
-          "particle": {
-            "type": "minecraft:portal"
-          },
+          "particle": "minecraft:portal",
           "count": 32,
           "offset_y": 0.25,
           "spread_y": 0.25,

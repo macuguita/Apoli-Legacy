@@ -1,8 +1,6 @@
 {
   "type": "apoli:particle",
-  "particle": {
-    "type": "minecraft:end_rod"
-  },
+  "particle": "minecraft:end_rod",
   "frequency": 1,
   "speed": 2,
   "count": 2,

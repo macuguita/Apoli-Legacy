@@ -5,6 +5,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 
 import java.util.EnumSet;
@@ -15,7 +16,7 @@ public class ActiveInteractionPower extends InteractionPower implements Prioriti
 
     private final int priority;
 
-    public ActiveInteractionPower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStack itemResult, Consumer<Tuple<Level, ItemStack>> resultItemAction, int priority) {
+    public ActiveInteractionPower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStackTemplate itemResult, Consumer<Tuple<Level, ItemStack>> resultItemAction, int priority) {
         super(type, entity, hands, actionResult, itemCondition, heldItemAction, itemResult, resultItemAction);
         this.priority = priority;
     }

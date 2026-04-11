@@ -12,6 +12,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -27,13 +28,13 @@ public class ModifyCraftingPower extends ValueModifyingPower {
     private final Identifier recipeIdentifier;
     private final Predicate<ItemStack> itemCondition;
 
-    private final ItemStack newStack;
+    private final ItemStackTemplate newStack;
     private final Consumer<Tuple<Level, ItemStack>> itemAction;
     private final Consumer<Tuple<Level, ItemStack>> lateItemAction;
     private final Consumer<Entity> entityAction;
     private final Consumer<Triple<Level, BlockPos, Direction>> blockAction;
 
-    public ModifyCraftingPower(PowerType<?> type, LivingEntity entity, Identifier recipeIdentifier, Predicate<ItemStack> itemCondition, ItemStack newStack, Consumer<Tuple<Level, ItemStack>> itemAction, Consumer<Tuple<Level, ItemStack>> lateItemAction, Consumer<Entity> entityAction, Consumer<Triple<Level, BlockPos, Direction>> blockAction) {
+    public ModifyCraftingPower(PowerType<?> type, LivingEntity entity, Identifier recipeIdentifier, Predicate<ItemStack> itemCondition, ItemStackTemplate newStack, Consumer<Tuple<Level, ItemStack>> itemAction, Consumer<Tuple<Level, ItemStack>> lateItemAction, Consumer<Entity> entityAction, Consumer<Triple<Level, BlockPos, Direction>> blockAction) {
         super(type, entity);
         this.recipeIdentifier = recipeIdentifier;
         this.itemCondition = itemCondition;
@@ -68,7 +69,7 @@ public class ModifyCraftingPower extends ValueModifyingPower {
     public ItemStack getNewResult(CraftingInput input, CraftingRecipe recipe) {
         ItemStack stack;
         if(newStack != null) {
-            stack = newStack.copy();
+            stack = newStack.create();
         } else {
             stack = recipe.assemble(input);
         }

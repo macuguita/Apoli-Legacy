@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import org.apache.commons.lang3.tuple.Triple;
@@ -29,7 +30,7 @@ public class ActionOnBlockUsePower extends ActiveInteractionPower {
     private final EnumSet<Direction> directions;
     private final Consumer<Triple<Level, BlockPos, Direction>> blockAction;
 
-    public ActionOnBlockUsePower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStack itemResult, Consumer<Tuple<Level, ItemStack>> resultItemAction, Consumer<Entity> entityAction, Predicate<BlockInWorld> blockCondition, EnumSet<Direction> directions, Consumer<Triple<Level, BlockPos, Direction>> blockAction, int priority) {
+    public ActionOnBlockUsePower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStackTemplate itemResult, Consumer<Tuple<Level, ItemStack>> resultItemAction, Consumer<Entity> entityAction, Predicate<BlockInWorld> blockCondition, EnumSet<Direction> directions, Consumer<Triple<Level, BlockPos, Direction>> blockAction, int priority) {
         super(type, entity, hands, actionResult, itemCondition, heldItemAction, itemResult, resultItemAction, priority);
         this.entityAction = entityAction;
         this.blockCondition = blockCondition;

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 
 import java.util.EnumSet;
@@ -24,7 +25,7 @@ public class PreventBeingUsedPower extends InteractionPower {
     private final Consumer<Tuple<Entity, Entity>> biEntityAction;
     private final Predicate<Tuple<Entity, Entity>> bientityCondition;
 
-    public PreventBeingUsedPower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStack itemResult, Consumer<Tuple<Level, ItemStack>> itemAction, Consumer<Tuple<Entity, Entity>> biEntityAction, Predicate<Tuple<Entity, Entity>> bientityCondition) {
+    public PreventBeingUsedPower(PowerType<?> type, LivingEntity entity, EnumSet<InteractionHand> hands, InteractionResult actionResult, Predicate<ItemStack> itemCondition, Consumer<Tuple<Level, ItemStack>> heldItemAction, ItemStackTemplate itemResult, Consumer<Tuple<Level, ItemStack>> itemAction, Consumer<Tuple<Entity, Entity>> biEntityAction, Predicate<Tuple<Entity, Entity>> bientityCondition) {
         super(type, entity, hands, actionResult, itemCondition, heldItemAction, itemResult, itemAction);
         this.biEntityAction = biEntityAction;
         this.bientityCondition = bientityCondition;
@@ -62,7 +63,7 @@ public class PreventBeingUsedPower extends InteractionPower {
                         InteractionResult.FAIL,
                         (Predicate<ItemStack>)data.get("item_condition"),
                         (Consumer<Tuple<Level, ItemStack>>)data.get("held_item_action"),
-                        (ItemStack)data.get("result_stack"),
+                        (ItemStackTemplate) data.get("result_stack"),
                         (Consumer<Tuple<Level, ItemStack>>)data.get("result_item_action"),
                         (Consumer<Tuple<Entity, Entity>>) data.get("bientity_action"),
                         (ConditionFactory<Tuple<Entity, Entity>>.Instance)data.get("bientity_condition"));

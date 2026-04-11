@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,7 @@ public class GlobalPowerSet implements Comparable<GlobalPowerSet>, DataObject<Gl
     public GlobalPowerSet(int order, TagLike<EntityType<?>> entityTypes, List<PowerType<?>> powerTypes) {
         this.order = order;
         this.entityTypes = entityTypes;
-        this.powerTypes = powerTypes;
+        this.powerTypes = new ArrayList<>(powerTypes);;
     }
 
     public boolean doesApply(EntityType<?> entityType) {
