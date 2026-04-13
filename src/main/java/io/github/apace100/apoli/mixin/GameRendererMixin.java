@@ -61,7 +61,7 @@ public abstract class GameRendererMixin {
     private void loadShaderFromPowerOnCameraEntity(Entity entity, CallbackInfo ci) {
         PowerHolderComponent.withPower(minecraft.getCameraEntity(), ShaderPower.class, null, shaderPower -> {
             Identifier shaderLoc = shaderPower.getShaderLocation();
-            if(this.minecraft.getResourceManager().getResource(shaderLoc).isPresent()) {
+            if(this.minecraft.getResourceManager().getResource(shaderLoc.withPrefix("post_effect/").withSuffix(".json")).isPresent()) {
                 this.setPostEffect(shaderLoc);
                 currentlyLoadedShader = shaderLoc;
             }
@@ -73,7 +73,7 @@ public abstract class GameRendererMixin {
         PowerHolderComponent.withPower(minecraft.getCameraEntity(), ShaderPower.class, null, shaderPower -> {
             Identifier shaderLoc = shaderPower.getShaderLocation();
             if(currentlyLoadedShader != shaderLoc) {
-                if(this.minecraft.getResourceManager().getResource(shaderLoc).isPresent()) {
+                if(this.minecraft.getResourceManager().getResource(shaderLoc.withPrefix("post_effect/").withSuffix(".json")).isPresent()) {
                     this.setPostEffect(shaderLoc);
                     currentlyLoadedShader = shaderLoc;
                 }
